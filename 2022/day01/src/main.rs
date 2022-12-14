@@ -20,7 +20,7 @@ fn main() {
 
     println!("Max calories: {max}");
 
-    calories.sort();
+    calories.sort_by(|a, b| b.cmp(a));
 
     let top: i32 = calories[0..3].iter().sum();
 
