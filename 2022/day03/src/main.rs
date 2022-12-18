@@ -1,11 +1,18 @@
-use std::fs::read_to_string;
+#![feature(iter_array_chunks)]
+
+use std::{fs::read_to_string, str::Lines};
 
 fn main() {
     let contents = read_to_string("input.txt").unwrap();
 
+    part_one(contents.lines());
+    part_two(contents.lines());
+}
+
+fn part_one(rucksacks: Lines) {
     let mut priorities = 0;
 
-    for rucksack in contents.lines() {
+    for rucksack in rucksacks {
         let pivot = rucksack.len() / 2;
 
         let first_compartment = &rucksack[..pivot];
@@ -18,7 +25,30 @@ fn main() {
         priorities += priority;
     }
 
-    println!("Sum: {priorities}")
+    println!("Sum (part one): {priorities}")
+}
+
+fn part_two(rucksacks: Lines) {
+    let mut priorities = 0;
+
+    for [a, b, c] in rucksacks.array_chunks() {
+        let duplicate = find_duplicate_2(a, b, c);
+        let priority = get_priority(duplicate);
+
+        priorities += priority
+    }
+
+    println!("Sum (part two): {priorities}")
+}
+
+fn find_duplicate_2(a: &str, b: &str, c: &str) -> char {
+    for char in a.chars() {
+        if b.contains(char) && c.contains(char) {
+            return char;
+        }
+    }
+
+    todo!()
 }
 
 fn find_duplicate(a: &str, b: &str) -> char {
