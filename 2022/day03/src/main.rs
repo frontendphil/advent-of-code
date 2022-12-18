@@ -1,4 +1,4 @@
-use std::{fs::read_to_string, ops::Index};
+use std::fs::read_to_string;
 
 fn main() {
     let contents = read_to_string("input.txt").unwrap();
@@ -6,7 +6,7 @@ fn main() {
     let mut priorities = 0;
 
     for rucksack in contents.lines() {
-        let pivot = rucksack.len();
+        let pivot = rucksack.len() / 2;
 
         let first_compartment = &rucksack[..pivot];
         let second_compartment = &rucksack[pivot..];
@@ -14,8 +14,11 @@ fn main() {
         let duplicate = find_duplicate(first_compartment, second_compartment);
 
         let priority = get_priority(duplicate);
+
         priorities += priority;
     }
+
+    println!("Sum: {priorities}")
 }
 
 fn find_duplicate(a: &str, b: &str) -> char {
@@ -41,7 +44,7 @@ fn get_priority(letter: char) -> usize {
     let lowercase_letter = letter.to_ascii_lowercase();
 
     if CHARS.contains(&lowercase_letter) {
-        return 2 * get_index(lowercase_letter) + 1;
+        return 26 + get_index(lowercase_letter) + 1;
     }
 
     todo!()
